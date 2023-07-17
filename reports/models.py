@@ -35,5 +35,8 @@ class ProblemReported(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = 'Problem Reported'
+        verbose_name_plural = 'Problems Reported'
 
     
