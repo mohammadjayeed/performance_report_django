@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %}report{% endblock title %}
 
 {% block content %}
-{{form.as_p}}
-<br>
-{{problem_report_form.as_p}}
+{{form|crispy}}
+<hr>
+{{problem_report_form|crispy}}
 {% endblock content %}
