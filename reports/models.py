@@ -3,6 +3,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from products.models import Product
 from areas.models import ProductionLine
+from category.models import Category
+
 
 hours = ([(str(x),str(x)) for x in range(1,25)])
 
@@ -21,4 +23,17 @@ class Report(models.Model):
 
     def __str__(self):
         return f"{self.start_hour} {self.end_hour} {self.production_line}"
+    
+class ProblemReported(models.Model):
+
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    description = models.TextField()
+    problem_id = models.CharField(max_length=12, unique=True, blank=True)
+    breakdown = models.SmallIntegerField()
+    public = models.BooleanField(default=False)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
     
