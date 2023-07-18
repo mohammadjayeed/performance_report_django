@@ -5,6 +5,29 @@
 
 {% block content %}
 
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Report Problems</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="" method="POST">
+
+          {{problem_report_form|crispy}}
+          <input type="hidden" name="report_id" id="report_id">
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <div class="container bg-white shadow-lg rounded py-2">
     <div class="row">
         <div class="col-2">
@@ -63,13 +86,13 @@
                             <td>{{obj.product}}</td>
                             <td>{{obj.production_line}}</td>
                             <td class = "fit">
-                                <a href=""><button class="btn btn-warning"> Explain </button>
+                                <button class="btn btn-warning open-modal" data-bs-toggle="modal" data-bs-target="#exampleModal" data-url={{obj.id}}> Explain </button>
                             </td>
                             <td class = "fit">
-                                <a href=""><button class="btn btn-info"> Edit</button>
+                                <a href=""><button class="btn btn-info"> Edit</button></a>
                             </td>
                             <td class = "fit">
-                                <a href=""><button class="btn btn-danger"> Delete</button>
+                                <a href=""><button class="btn btn-danger"> Delete</button></a>
                             </td>
                             
                             </tr>
@@ -86,5 +109,15 @@
         </div>
     </div>
 </div>
+<script>
 
+    $(".open-modal").on("click", function(){
+        const r_id = $(this).attr("data-url")
+        $("#report_id").val(r_id)
+        
+
+
+    })
+
+</script>
 {% endblock content %}
