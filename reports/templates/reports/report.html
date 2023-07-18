@@ -1,9 +1,67 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% block title %}report{% endblock title %}
+{% block title %} report {% endblock title %}
 
 {% block content %}
-{{form|crispy}}
-<hr>
-{{problem_report_form|crispy}}
+
+<div class="container bg-white shadow-lg rounded py-2">
+    <div class="row">
+        <div class="col-2">
+
+            <form action="" style="height: 100vh" method="POST">
+
+                {{form|crispy}}
+                
+                <button type="submit" class="btn btn-primary w-100 shadow-sm mt-3"> Send </button>
+
+            </form>
+        </div>
+            <div class="col-10">
+
+                <div class="w-100 h-100 bg-light rounded border" style="overflow-y: scroll">
+                <table class="table">
+
+                    <thead class="thead-light">
+                        <tr class="text-center">
+
+                            <th scope="col"> Day </th>
+
+                            <th scope="col"> Start </th>
+
+                            <th scope="col"> End </th>
+
+                            <th scope="col"> Plan </th>
+
+                            <th scope="col"> Execution </th>
+
+                            <th scope="col"> Product </th>
+
+                            <th scope="col"> Production Line </th>
+
+                            <th scope="col"> Problems </th>
+
+                            <th scope="col"> Edit </th>
+
+                            <th scope="col"> Delete </th>
+
+                           
+
+
+
+
+                        </tr>
+                    </thead>
+
+                </table>
+                </div>
+
+
+            </div>
+
+            
+
+        </div>
+    </div>
+</div>
+
 {% endblock content %}
