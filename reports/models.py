@@ -19,7 +19,7 @@ class Report(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
-    production_line = models.ForeignKey(ProductionLine,on_delete=models.CASCADE)
+    production_line = models.ForeignKey(ProductionLine,on_delete=models.CASCADE, related_name='pl')
 
     def __str__(self):
         return f"{self.start_hour} {self.end_hour} {self.production_line}"
@@ -34,6 +34,9 @@ class ProblemReported(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.category.name
 
     class Meta:
         verbose_name = 'Problem Reported'
