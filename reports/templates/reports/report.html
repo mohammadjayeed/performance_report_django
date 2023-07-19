@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
 {% load crispy_forms_tags %}
 {% block title %} report {% endblock title %}
 
@@ -46,36 +45,22 @@
         </div>
             <div class="col-10">
 
-                <div class="w-100 h-100 bg-light rounded border" style="overflow-y: scroll">
+                <div class="w-100 bg-light rounded border" style="overflow-y: scroll height: 85vh">
                 <table class="table">
 
                     <thead class="thead-light">
                         <tr class="text-center">
 
                             <th scope="col"> Day </th>
-                           
                             <th scope="col"> Start </th>
-
                             <th scope="col"> End </th>
-
                             <th scope="col"> Plan </th>
-
                             <th scope="col"> Execution </th>
-
                             <th scope="col"> Product </th>
-
                             <th scope="col"> Production Line </th>
-
                             <th scope="col"> Problems </th>
-
                             <th scope="col"> Edit </th>
-
-                            <th scope="col"> Delete </th>
-
-                           
-
-
-
+                            <th scope="col"> Delete </th>                        
 
                         </tr>
                     </thead>
@@ -93,10 +78,10 @@
                                 <button class="btn btn-warning open-modal" data-bs-toggle="modal" data-bs-target="#exampleModal" data-url={{obj.id}}> Explain </button>
                             </td>
                             <td class = "fit">
-                                <a href=""><button class="btn btn-info"> Edit</button></a>
+                                <a href="{{obj.get_absolute_url}}"><button class="btn btn-info">Edit</button></a>
                             </td>
                             <td class = "fit">
-                                <a href=""><button class="btn btn-danger"> Delete</button></a>
+                                <a href="{% url 'reports:delete-view' pk=obj.id%}"><button class="btn btn-danger"> Delete</button></a>
                             </td>
                             
                             </tr>

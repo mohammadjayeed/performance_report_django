@@ -1,10 +1,43 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 # Create your views here.
 from areas.models import ProductionLine
-
+from django.views.generic import UpdateView
 from .forms import *
+from django.contrib.auth.decorators import login_required
+
+class ReportUpdateView(UpdateView):
+    
+
+    model = Report
+    form_class = ReportForm
+    template_name = 'reports/update.html'
+
+    def get(self, request, *args, **kwargs):
+        self.custom_value = self.kwargs['production_line']
+        # Do something with the parameter value
+        return super().get(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if hasattr(self, 'custom_value'):
+            kwargs['production_line'] = self.custom_value
+        return kwargs
 
 
+    def get_success_url(self):
+        return self.request.path
+
+
+@login_required
+def delete_view(request, *args, **kwargs):
+    report_record_number = kwargs.get('pk')
+    report = Report.objects.get(id=report_record_number)
+    report.delete()
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+@login_required
 def report_view(request, production_line):
     form = ReportForm(request.POST or None, production_line= production_line)
     problem_report_form = ProblemReportedForm(request.POST or None)
@@ -23,10 +56,10 @@ def report_view(request, production_line):
             obj.user = request.user
             obj.production_line = line
             obj.save()
-            form = ReportForm()
-            problem_report_form = ProblemReportedForm()
+            # form = ReportForm()
+            # problem_report_form = ProblemReportedForm()
 
-            # return redirect(request.META.get('HTTP_REFERER'))
+            return redirect(request.META.get('HTTP_REFERER'))
         
     elif "submitbutton2" in request.POST:
         r_id = request.POST.get('report_id')
@@ -38,9 +71,9 @@ def report_view(request, production_line):
             obj.user = request.user
             obj.report = report
             obj.save()
-            form = ReportForm()
-            problem_report_form = ProblemReportedForm()
-            # return redirect(request.META.get('HTTP_REFERER'))
+            # form = ReportForm()
+            # problem_report_form = ProblemReportedForm()
+            return redirect(request.META.get('HTTP_REFERER'))
         
     context = {
 

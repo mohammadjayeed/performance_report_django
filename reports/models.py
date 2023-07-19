@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from products.models import Product
 from areas.models import ProductionLine
 from category.models import Category
-
+from django.urls import reverse
 
 hours = ([(str(x),str(x)) for x in range(1,25)])
 import random
@@ -28,6 +28,9 @@ class Report(models.Model):
 
     def get_day(self):
         return self.day.strftime('%d/%m/%Y')
+    
+    def get_absolute_url(self):
+        return reverse('reports:update-view',kwargs={'production_line':self.production_line,'pk':self.pk})
 
     def __str__(self):
         return f"{self.start_hour} {self.end_hour} {self.production_line}"
