@@ -7,6 +7,11 @@ from category.models import Category
 
 
 hours = ([(str(x),str(x)) for x in range(1,25)])
+import random
+
+el = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+     'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
 
 # Create your models here.
 class Report(models.Model):
@@ -21,14 +26,31 @@ class Report(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     production_line = models.ForeignKey(ProductionLine,on_delete=models.CASCADE, related_name='pl')
 
+    def get_day(self):
+        return self.day.strftime('%d/%m/%Y')
+
     def __str__(self):
         return f"{self.start_hour} {self.end_hour} {self.production_line}"
     
+    class Meta:
+        ordering = ('-created_at',)
+
+
+def random_code():
+    random.shuffle(el)
+    code = [str(x) for x in el[:12]]
+    str_code = ''.join(code)
+
+    return str_code
+
+
+
 class ProblemReported(models.Model):
 
+    report = models.ForeignKey(Report, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.TextField()
-    problem_id = models.CharField(max_length=12, unique=True, blank=True)
+    problem_id = models.CharField(max_length=12, unique=True, blank=True, default=random_code)
     breakdown = models.SmallIntegerField()
     public = models.BooleanField(default=False)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -41,5 +63,3 @@ class ProblemReported(models.Model):
     class Meta:
         verbose_name = 'Problem Reported'
         verbose_name_plural = 'Problems Reported'
-
-    
