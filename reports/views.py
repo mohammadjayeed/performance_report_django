@@ -5,6 +5,21 @@ from areas.models import ProductionLine
 from django.views.generic import UpdateView
 from .forms import *
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import FormView
+
+
+class HomeView(FormView):
+
+    template_name = 'reports/home.html'
+    form_class = ReportSelectLineForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+
+
 
 class ReportUpdateView(UpdateView):
     
