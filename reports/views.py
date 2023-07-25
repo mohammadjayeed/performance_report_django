@@ -18,6 +18,10 @@ class HomeView(FormView):
         kwargs['user'] = self.request.user
         return kwargs
 
+    def post(self, request):
+        prod_line = self.request.POST.get('prod_line')
+        url = reverse('reports:report-view', kwargs={'production_line': prod_line})
+        return redirect(url)
 
 
 
@@ -27,6 +31,8 @@ class ReportUpdateView(UpdateView):
     model = Report
     form_class = ReportForm
     template_name = 'reports/update.html'
+
+    
 
     def get(self, request, *args, **kwargs):
         self.custom_value = self.kwargs['production_line']

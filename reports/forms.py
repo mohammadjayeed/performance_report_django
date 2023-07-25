@@ -4,11 +4,11 @@ from django.shortcuts import get_object_or_404
 from areas.models import ProductionLine
 
 class ReportSelectLineForm(forms.Form):
-    production_line = forms.ModelChoiceField(queryset=ProductionLine.objects.none())
+    production_line = forms.ModelChoiceField(queryset=ProductionLine.objects.none(), label='')
 
     def __init__(self,user,*args,**kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['production_line'].queryset = ProductionLine.objects.filter(team_lead__user = user)
+        self.fields['production_line'].queryset = ProductionLine.objects.filter(team_lead__user__username = user)
 
 
 class ReportForm(forms.ModelForm):
