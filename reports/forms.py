@@ -3,6 +3,14 @@ from django import forms
 from django.shortcuts import get_object_or_404
 from areas.models import ProductionLine
 
+
+class ReportResultForm(forms.Form):
+    production_line = forms.ModelChoiceField(queryset=ProductionLine.objects.all())
+    date = forms.CharField(widget=forms.DateTimeInput(
+
+        attrs={'class':'datepicker'}
+
+    ))
 class ReportSelectLineForm(forms.Form):
     production_line = forms.ModelChoiceField(queryset=ProductionLine.objects.none(), label='')
 

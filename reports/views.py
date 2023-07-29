@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 # Create your views here.
 from areas.models import ProductionLine
 from django.views.generic import UpdateView
@@ -8,6 +8,15 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView
 
 
+class SelectView(FormView):
+    template_name = 'reports/select.html'
+    form_class = ReportResultForm
+    success_url = reverse_lazy('reports:home-view')
+
+    def form_valid(self, form):
+        self.request.session['date'] = self.request.POST.get('date', None)
+        print(self.request.session['date'])
+        return super().form_valid(form)
 class HomeView(FormView):
 
     template_name = 'reports/home.html'
