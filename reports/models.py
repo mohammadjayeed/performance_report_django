@@ -12,6 +12,12 @@ import random
 el = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
      'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
+class ReportManager(models.Manager):
+
+    def filter_by_day(self, day):
+        return Report.objects.filter(day=day)
+
+
 
 # Create your models here.
 class Report(models.Model):
@@ -26,6 +32,7 @@ class Report(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     production_line = models.ForeignKey(ProductionLine,on_delete=models.CASCADE, related_name='pl')
 
+    objects = ReportManager()
     def get_day(self):
         return self.day.strftime('%d/%m/%Y')
     

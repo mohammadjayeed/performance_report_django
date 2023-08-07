@@ -7,15 +7,34 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView
 
+# self made logic
+from django.core.exceptions import ObjectDoesNotExist
+
+@login_required
+def summary_report(request):
+    report_qs = None
+    try:
+        day = request.session.get('day',None)
+        report_qs = Report.objects.filter_by_day(day=day)
+        
+    except ObjectDoesNotExist:
+        report_qs = Report.objects.none()
+
+    context = {
+
+        'report_qs': report_qs,
+    }
+    return render(request, 'reports/summary.html', context)
+
 
 class SelectView(FormView):
     template_name = 'reports/select.html'
     form_class = ReportResultForm
-    success_url = reverse_lazy('reports:home-view')
+    success_url = reverse_lazy('reports:summary-view')
 
     def form_valid(self, form):
-        self.request.session['date'] = self.request.POST.get('date', None)
-        print(self.request.session['date'])
+        self.request.session['day'] = self.request.POST.get('day', None)
+        print(self.request.session['day'])
         return super().form_valid(form)
 class HomeView(FormView):
 

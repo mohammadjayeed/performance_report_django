@@ -6,7 +6,7 @@ from areas.models import ProductionLine
 
 class ReportResultForm(forms.Form):
     production_line = forms.ModelChoiceField(queryset=ProductionLine.objects.all())
-    date = forms.CharField(widget=forms.DateTimeInput(
+    day = forms.CharField(widget=forms.DateTimeInput(
 
         attrs={'class':'datepicker'}
 
