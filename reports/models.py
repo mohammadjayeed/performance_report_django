@@ -5,6 +5,7 @@ from products.models import Product
 from areas.models import ProductionLine
 from category.models import Category
 from django.urls import reverse
+from django.db.models import Sum
 
 hours = ([(str(x),str(x)) for x in range(1,25)])
 import random
@@ -14,9 +15,14 @@ el = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
 
 class ReportManager(models.Manager):
 
-    def filter_by_day(self, day):
-        return Report.objects.filter(day=day)
+    def get_by_day_and_line(self, day, line):
+        return Report.objects.filter(day=day, production_line__id = line)
 
+    def aggregate_execution(self):
+        return self.aggregate(Sum('execution'))
+
+    def aggregate_plan(self):
+        return self.aggregate(Sum('plan'))
 
 
 # Create your models here.

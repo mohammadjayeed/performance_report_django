@@ -15,7 +15,10 @@ def summary_report(request):
     report_qs = None
     try:
         day = request.session.get('day',None)
-        report_qs = Report.objects.filter_by_day(day=day)
+        line = request.session.get('production_line',None)
+        # print(line)
+        report_qs = Report.objects.get_by_day_and_line(day=day,line=line)
+        # print(Report.objects.aggregate_execution()['execution__sum'])
         
     except ObjectDoesNotExist:
         report_qs = Report.objects.none()
@@ -34,7 +37,9 @@ class SelectView(FormView):
 
     def form_valid(self, form):
         self.request.session['day'] = self.request.POST.get('day', None)
-        print(self.request.session['day'])
+        self.request.session['production_line'] = self.request.POST.get('production_line', None)
+        # print(self.request.session['day'])
+        # print(self.request.session['production_line'])
         return super().form_valid(form)
 class HomeView(FormView):
 
