@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.query import QuerySet
 from django.utils import timezone
 from django.contrib.auth.models import User
 from products.models import Product
@@ -13,7 +14,9 @@ import random
 el = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
      'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-class ReportManager(models.Manager):
+
+
+class ReportQueryset(models.QuerySet):
 
     def get_by_day_and_line(self, day, line):
         return Report.objects.filter(day=day, production_line__id = line)
@@ -23,6 +26,20 @@ class ReportManager(models.Manager):
 
     def aggregate_plan(self):
         return self.aggregate(Sum('plan'))
+
+class ReportManager(models.Manager):
+
+    def get_queryset(self):
+        return ReportQueryset(self.model, using=self._db)
+
+    def get_by_day_and_line(self, day, line):
+        return self.get_queryset().get_by_day_and_line(day,line)
+    
+    def aggregate_execution(self):
+        return self.get_queryset.aggregate_execution()
+
+    def aggregate_plan(self):
+        return self.get_queryset.aggregate_plan()
 
 
 # Create your models here.
