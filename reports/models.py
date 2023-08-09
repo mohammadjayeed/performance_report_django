@@ -18,7 +18,7 @@ el = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
 
 class ReportQueryset(models.QuerySet):
 
-    def get_by_day_and_line(self, day, line):
+    def get_by_line_and_day(self, day, line):
         return Report.objects.filter(day=day, production_line__id = line)
 
     def aggregate_execution(self):
@@ -32,8 +32,8 @@ class ReportManager(models.Manager):
     def get_queryset(self):
         return ReportQueryset(self.model, using=self._db)
 
-    def get_by_day_and_line(self, day, line):
-        return self.get_queryset().get_by_day_and_line(day,line)
+    def get_by_line_and_day(self, day, line):
+        return self.get_queryset().get_by_line_and_day(day,line)
     
     def aggregate_execution(self):
         return self.get_queryset.aggregate_execution()

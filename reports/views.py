@@ -17,15 +17,18 @@ def summary_report(request):
         day = request.session.get('day',None)
         line = request.session.get('production_line',None)
         # print(line)
-        report_qs = Report.objects.get_by_day_and_line(day=day,line=line)
-        # print(Report.objects.aggregate_execution()['execution__sum'])
+        qs = Report.objects.get_by_line_and_day(day=day,line=line)
+        execution = qs.aggregate_execution()['execution__sum']
+        plan = qs.aggregate_plan()['plan__sum']
+        
         
     except ObjectDoesNotExist:
         report_qs = Report.objects.none()
 
     context = {
 
-        'report_qs': report_qs,
+        'execution': execution,
+        'plan':plan
     }
     return render(request, 'reports/summary.html', context)
 

@@ -9,13 +9,13 @@ summary
 {% block content %}
 
 <div class="text-center text-white h1"> 
-    {% for obj in report_qs %}
     
     
-    {{obj.execution}} - {{obj.created_at}}
+    
+    {{plan}} | {{execution}}
     
     
-    {% endfor %}
+
      </div>
 
 {% endblock content %}
