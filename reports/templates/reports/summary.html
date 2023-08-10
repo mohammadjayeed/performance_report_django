@@ -8,14 +8,32 @@ summary
 
 {% block content %}
 
-<div class="text-center text-white h1"> 
-    
-    
-    
-    {{plan}} | {{execution}}
-    
-    
-
-     </div>
+<div class = "container bg-white py-2 rounded">
+    <div class="col-12">
+        <div class= "text-muted h2">
+            <i class="fa-solid fa-gauge-high"></i></i> Results
+        </div>
+    </div>
+    <div class = "col">
+        summary of: <strong> {{day}} - {{line}} </strong>
+    </div>
+    <table class= "table table-sm text-center">
+        <thead>
+        <tr>
+                <th scope="col">Plan</th>
+                <th scope="col">Execution</th>
+                <th scope="col">Difference</th>
+                <th scope="col">OK?</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{plan}}</td>
+            <td>{{execution}}</td>
+            <td>{{plan}}</td>
+            <td>{{plan}}</td>
+        </tbody>
+    </table>
+</div>
 
 {% endblock content %}

@@ -17,6 +17,7 @@ def summary_report(request):
         day = request.session.get('day',None)
         line = request.session.get('production_line',None)
         # print(line)
+        production_line = ProductionLine.objects.get(id= line)
         qs = Report.objects.get_by_line_and_day(day=day,line=line)
         execution = qs.aggregate_execution()['execution__sum']
         plan = qs.aggregate_plan()['plan__sum']
@@ -28,7 +29,9 @@ def summary_report(request):
     context = {
 
         'execution': execution,
-        'plan':plan
+        'plan':plan,
+        'line': production_line,
+        'day':day
     }
     return render(request, 'reports/summary.html', context)
 
