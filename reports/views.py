@@ -13,6 +13,7 @@ from reports.models import ProblemReported
 from easy_pdf.rendering import render_to_pdf_response
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.contrib.auth.mixins import LoginRequiredMixin
 # from weasyprint import HTML
 import tempfile
 
@@ -20,7 +21,7 @@ import tempfile
 
 
 
-
+@login_required
 def get_problems_in_pdf(request):
     problems = ProblemReported.objects.get_todays_report()
 
@@ -62,7 +63,7 @@ def summary_report(request):
         
         
     except ObjectDoesNotExist:
-        report_qs = Report.objects.none()
+        return redirect('reports:select-view')
 
     context = {
 
@@ -72,10 +73,14 @@ def summary_report(request):
         'day':day,
         'problems':problems
     }
+
+    del request.session['day']
+    del request.session['production_line']
+
     return render(request, 'reports/summary.html', context)
 
 
-class SelectView(FormView):
+class SelectView(LoginRequiredMixin,FormView):
     template_name = 'reports/select.html'
     form_class = ReportResultForm
     success_url = reverse_lazy('reports:summary-view')
@@ -86,6 +91,7 @@ class SelectView(FormView):
         # print(self.request.session['day'])
         # print(self.request.session['production_line'])
         return super().form_valid(form)
+    
 class HomeView(FormView):
 
     template_name = 'reports/home.html'
@@ -103,7 +109,7 @@ class HomeView(FormView):
 
 
 
-class ReportUpdateView(UpdateView):
+class ReportUpdateView( LoginRequiredMixin,UpdateView):
     
 
     model = Report

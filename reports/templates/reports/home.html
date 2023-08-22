@@ -8,16 +8,17 @@ Home
 
 {% block content %}
 
-<div class="col-6 mx-auto m-5 vh-100">
-    <div class="text-center text-white h1"> Welcome to Jayeed Productions Ltd. </div>
+<div class="col-6 mx-auto m-5">
+    <div class="text-center text-white h1 mb-5"> Welcome to Jayeed Productions Ltd. </div>
         {% if request.user.is_authenticated %}
-        <div class="text-center text-white h4 mb-5"> Select your production line </div>
-            <form action="" method="POST" class="form-horizontal">
+        
+            <form action="" method="POST" class="form-horizontal" class="form-control">
+                <div class="text-white h5 mb-2"> Select your production line </div>
                 {% csrf_token %}
                 {{form | crispy}}
                 <br>
                 <input type="hidden" name="prod_line" id = "prod_line">
-                <button type="submit" class="btn btn-primary">submit</button>
+                <button type="submit" class="btn btn-primary" >submit</button>
             </form>
         {% else %}
             <div class="text-center text-white h3"> Login to begin </div>
