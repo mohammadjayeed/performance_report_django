@@ -7,7 +7,8 @@ from areas.models import ProductionLine
 from category.models import Category
 from django.urls import reverse
 from django.db.models import Sum
-import datetime
+from datetime import datetime
+import pytz
 hours = ([(str(x),str(x)) for x in range(1,25)])
 import random
 
@@ -81,8 +82,8 @@ class ProblemReportedManager(models.Manager):
     def get_report_by_line_and_day(self, day, line):
         return super().get_queryset().filter(report__day = day, report__production_line__name = line)
 
-    def get_todays_report():
-        today = datetime.now().strftime('%Y-%m-%d')
+    def get_todays_report(self):
+        today = datetime.now()
         return super().get_queryset().filter(report__day=today)
 
 class ProblemReported(models.Model):

@@ -6,18 +6,18 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import UpdateView
 from django.views.generic.edit import FormView
-
+from .forms import *
 # Create your views here.
 from areas.models import ProductionLine
 from reports.models import ProblemReported
-
+from easy_pdf.rendering import render_to_pdf_response
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-from weasyprint import HTML
+# from weasyprint import HTML
 import tempfile
 
 
-from .forms import *
+
 
 
 
@@ -25,23 +25,23 @@ def get_problems_in_pdf(request):
     problems = ProblemReported.objects.get_todays_report()
 
     context = {'problems':problems}
+    template = 'reports/problems.html'
+    # html_string = render_to_string('reporst/problems.html',context)
 
-    html_string = render_to_string('reporst/problems.html',context)
-
-    html = HTML(string=html_string)
-    result = html.write_pdf()
+    # html = HTML(string=html_string)
+    # result = html.write_pdf()
 
 
-    response = HttpResponse(content_type='application/pdf;')
-    response['Content-Disposition'] = 'inline; filename=problem_list.pdf'
-    response['Content-Transfer-Encoding'] = 'binary'
-    with tempfile.NamedTemporaryFile(delete=True) as output:
-        output.write(result)
-        output.flush()
-        output = open(output.name, 'rb')
-        response.write(output.read())
+    # response = HttpResponse(content_type='application/pdf;')
+    # response['Content-Disposition'] = 'inline; filename=problem_list.pdf'
+    # response['Content-Transfer-Encoding'] = 'binary'
+    # with tempfile.NamedTemporaryFile(delete=True) as output:
+    #     output.write(result)
+    #     output.flush()
+    #     output = open(output.name, 'rb')
+    #     response.write(output.read())
 
-    return response
+    return render_to_pdf_response(request,template,context)
 
 
 
