@@ -131,7 +131,7 @@ LOGIN_URL = '/admin/'
 
 STATIC_URL = '/static/'
 
-STATICFILE_DIRS = [
+STATICFILES_DIRS = [
 
     BASE_DIR / "static"
 
