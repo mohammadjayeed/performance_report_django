@@ -11,7 +11,39 @@ from django.views.generic.edit import FormView
 from areas.models import ProductionLine
 from reports.models import ProblemReported
 
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from weasyprint import HTML
+import tempfile
+
+
 from .forms import *
+
+
+
+def get_problems_in_pdf(request):
+    problems = ProblemReported.objects.get_todays_report()
+
+    context = {'problems':problems}
+
+    html_string = render_to_string('reporst/problems.html',context)
+
+    html = HTML(string=html_string)
+    result = html.write_pdf()
+
+
+    response = HttpResponse(content_type='application/pdf;')
+    response['Content-Disposition'] = 'inline; filename=problem_list.pdf'
+    response['Content-Transfer-Encoding'] = 'binary'
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output = open(output.name, 'rb')
+        response.write(output.read())
+
+    return response
+
+
 
 
 @login_required
