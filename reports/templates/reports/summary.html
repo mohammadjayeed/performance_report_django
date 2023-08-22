@@ -34,6 +34,18 @@ summary
             <td>{{plan}}</td>
         </tbody>
     </table>
+    <br>
+                <h3> Problems </h3>
+                <hr>
+                {% for problem in problems %}
+                <small class="text-muted"> 
+                    {{problem.problem_id}}</small><br>
+                    {{problem.category}}<br>
+                    {{problem.description}}<br>
+                    {{problem.breakdown}}<br>
+                    
+                    <hr>
+                {% endfor %}
 </div>
 
 {% endblock content %}

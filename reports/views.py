@@ -1,14 +1,18 @@
-from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse, reverse_lazy
-# Create your views here.
-from areas.models import ProductionLine
-from django.views.generic import UpdateView
-from .forms import *
 from django.contrib.auth.decorators import login_required
-from django.views.generic.edit import FormView
-
 # self made logic
 from django.core.exceptions import ObjectDoesNotExist
+
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse, reverse_lazy
+from django.views.generic import UpdateView
+from django.views.generic.edit import FormView
+
+# Create your views here.
+from areas.models import ProductionLine
+from reports.models import ProblemReported
+
+from .forms import *
+
 
 @login_required
 def summary_report(request):
@@ -21,6 +25,8 @@ def summary_report(request):
         qs = Report.objects.get_by_line_and_day(day=day,line=line)
         execution = qs.aggregate_execution()['execution__sum']
         plan = qs.aggregate_plan()['plan__sum']
+        problems = ProblemReported.objects.get_report_by_line_and_day(day=day,line=production_line)
+        # print(problems)
         
         
     except ObjectDoesNotExist:
@@ -31,7 +37,8 @@ def summary_report(request):
         'execution': execution,
         'plan':plan,
         'line': production_line,
-        'day':day
+        'day':day,
+        'problems':problems
     }
     return render(request, 'reports/summary.html', context)
 

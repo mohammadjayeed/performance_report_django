@@ -77,6 +77,10 @@ def random_code():
     return str_code
 
 
+class ProblemReportedManager(models.Manager):
+    def get_report_by_line_and_day(self, day, line):
+        return super().get_queryset().filter(report__day = day, report__production_line__name = line)
+
 
 class ProblemReported(models.Model):
 
@@ -89,6 +93,9 @@ class ProblemReported(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+    objects = ProblemReportedManager()
 
     def __str__(self):
         return self.category.name
