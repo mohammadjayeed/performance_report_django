@@ -75,13 +75,13 @@
                             <td>{{obj.product}}</td>
                             <td>{{obj.production_line}}</td>
                             <td class = "fit">
-                                <button class="btn btn-warning open-modal" data-bs-toggle="modal" data-bs-target="#exampleModal" data-url={{obj.id}}> Explain </button>
+                                <button class="btn btn-warning open-modal" data-bs-toggle="modal" data-bs-target="#exampleModal" data-url={{obj.id}}> <i class="fa-solid fa-circle-exclamation"></i> </button>
                             </td>
                             <td class = "fit">
-                                <a href="{{obj.get_absolute_url}}"><button class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>
+                                <a href="{{obj.get_absolute_url}}"><button class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i></button></a>
                             </td>
                             <td class = "fit">
-                                <a href="{% url 'reports:delete-view' pk=obj.id%}"><button class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</button></a>
+                                <a href="{% url 'reports:delete-view' pk=obj.id%}"><button class="btn btn-danger"><i class="fa-solid fa-trash"></i> </button></a>
                             </td>
                             
                             </tr>
